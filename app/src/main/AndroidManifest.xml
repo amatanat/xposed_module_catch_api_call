@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ma.catchapicall"
-    android:installLocation="internalOnly">
+    package="com.ma.catchapicall">
 
     <application
         android:allowBackup="true"
