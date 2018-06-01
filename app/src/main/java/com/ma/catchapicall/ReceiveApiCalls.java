@@ -59,7 +59,7 @@ public class ReceiveApiCalls implements IXposedHookLoadPackage {
                 findAndHookMethod("com.android.calendar.AllInOneActivity", lpparam.classLoader,
                         "onCreate", Bundle.class,
 
-                        // before onCreate call in ContactSelectionActivity.
+                        // before onCreate call in AllInOneActivity.
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) {
