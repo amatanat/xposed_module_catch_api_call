@@ -59,22 +59,6 @@ public class ReceiveApiCalls implements IXposedHookLoadPackage {
                 findAndHookMethod("com.android.calendar.AllInOneActivity", lpparam.classLoader,
                         "onCreate", Bundle.class,
 
-                        // replace method in ContactSelectionActivity
-//                    new XC_MethodReplacement() {
-//                        @Override
-//                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-//                            Context context = (Context) (param.thisObject);
-//                            PackageManager manager = context.getPackageManager();
-//                            // open third-party app
-//                            Intent intent = manager.getLaunchIntentForPackage("com.ma.bakingrecipes");
-//                            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-//                            // TODO startActivityForResult
-//                            context.startActivity(intent);
-//                            // TODO return required value
-//                            return null;
-//                        }
-//                    }
-
                         // before onCreate call in ContactSelectionActivity.
                         new XC_MethodHook() {
                             @Override
