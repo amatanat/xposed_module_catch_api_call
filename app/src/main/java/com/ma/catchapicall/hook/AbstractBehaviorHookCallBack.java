@@ -7,6 +7,7 @@ public abstract class AbstractBehaviorHookCallBack extends MethodHookCallBack {
 //		Logger.log_behavior("Invoke "+ param.method.getDeclaringClass().getName()+"->"+param.method.getName());
         this.paramInfo(param);
         //this.printStackInfo();
+        param.setResult(null);
     }
 
     @Override

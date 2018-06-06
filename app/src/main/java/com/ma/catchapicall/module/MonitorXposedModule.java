@@ -3,9 +3,12 @@ package com.ma.catchapicall.module;
 import android.content.pm.ApplicationInfo;
 
 import com.ma.catchapicall.api.ApiMonitorHookManager;
+import com.ma.catchapicall.hook.ApiMonitorHook;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
+
+// source https://github.com/cyruliu/Sensitive_API_Monitor
 
 public class MonitorXposedModule implements IXposedHookLoadPackage {
     @Override
@@ -16,6 +19,7 @@ public class MonitorXposedModule implements IXposedHookLoadPackage {
             return;
         }
 
-        ApiMonitorHookManager.getInstance().startMonitor();
+       // ApiMonitorHookManager.getInstance().startMonitor();
+        ApiMonitorHookManager.getInstance().replaceMethod();
     }
 }

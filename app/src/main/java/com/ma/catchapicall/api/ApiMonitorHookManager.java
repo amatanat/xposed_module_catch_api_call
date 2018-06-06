@@ -18,4 +18,8 @@ public class ApiMonitorHookManager {
     public void startMonitor(){
         this.contentResolverHook.startHook();
     }
+
+    public void replaceMethod(){
+        this.contentResolverHook.replaceMethod();
+    }
 }

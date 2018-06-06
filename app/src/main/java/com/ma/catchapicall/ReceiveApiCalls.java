@@ -33,8 +33,8 @@ public class ReceiveApiCalls implements IXposedHookLoadPackage {
 //            // find 'onCreate' in ContactSelectionActivity and hook it.
 //            findAndHookMethod("com.android.contacts.activities.ContactSelectionActivity", lpparam.classLoader,
 //                    "onCreate",
-
-                    // replace method in ContactSelectionActivity
+//
+//                    // replace method in ContactSelectionActivity
 //                    new XC_MethodReplacement() {
 //                        @Override
 //                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
