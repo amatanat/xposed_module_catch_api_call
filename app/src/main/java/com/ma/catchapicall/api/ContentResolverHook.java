@@ -4,6 +4,7 @@ import android.app.AndroidAppHelper;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -115,14 +116,15 @@ public class ContentResolverHook extends ApiMonitorHook {
                                     (String) param.args[4]);
                             XposedBridge.log("Query SQL = " + queryStr);
 
-                            Context context =  AndroidAppHelper.currentApplication();
-                            PackageManager manager = context.getPackageManager();
-                            // open third-party app
-                            Intent intent = manager.getLaunchIntentForPackage("com.ma.bakingrecipes");
-                            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                            context.startActivity(intent);
+//                            Context context =  AndroidAppHelper.currentApplication();
+//                            PackageManager manager = context.getPackageManager();
+//                            // open third-party app
+//                            Intent intent = manager.getLaunchIntentForPackage("com.ma.bakingrecipes");
+//                            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+//                            context.startActivity(intent);
                         }
-                        param.setResult(DO_NOTHING);
+                        //param.setResult(DO_NOTHING);
+                        
                         return null;
                     }
                 });

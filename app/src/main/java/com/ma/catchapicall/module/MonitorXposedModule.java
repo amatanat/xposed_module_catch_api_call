@@ -19,7 +19,10 @@ public class MonitorXposedModule implements IXposedHookLoadPackage {
             return;
         }
 
-       // ApiMonitorHookManager.getInstance().startMonitor();
         ApiMonitorHookManager.getInstance().replaceMethod();
+
+
+       // ApiMonitorHookManager.getInstance().startMonitor();
+
     }
 }
