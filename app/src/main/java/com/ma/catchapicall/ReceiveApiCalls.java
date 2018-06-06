@@ -1,12 +1,17 @@
 package com.ma.catchapicall;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
+import static de.robv.android.xposed.XC_MethodReplacement.DO_NOTHING;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 
@@ -19,15 +24,15 @@ public class ReceiveApiCalls implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) {
             // check the package name
-            if (lpparam.packageName.equals("com.android.contacts")) {
-            XposedBridge.log("******Loaded app: " + lpparam.packageName);
-            XposedBridge.log("@@@@@@@@@ found class: " + findClass
-                    ("com.android.contacts.activities.ContactSelectionActivity",
-                            lpparam.classLoader));
-
-            // find 'onCreate' in ContactSelectionActivity and hook it.
-            findAndHookMethod("com.android.contacts.activities.ContactSelectionActivity", lpparam.classLoader,
-                    "onCreate", Bundle.class,
+//            if (lpparam.packageName.equals("com.android.contacts")) {
+//            XposedBridge.log("******Loaded app: " + lpparam.packageName);
+//            XposedBridge.log("@@@@@@@@@ found class: " + findClass
+//                    ("com.android.contacts.activities.ContactSelectionActivity",
+//                            lpparam.classLoader));
+//
+//            // find 'onCreate' in ContactSelectionActivity and hook it.
+//            findAndHookMethod("com.android.contacts.activities.ContactSelectionActivity", lpparam.classLoader,
+//                    "onCreate",
 
                     // replace method in ContactSelectionActivity
 //                    new XC_MethodReplacement() {
@@ -46,26 +51,27 @@ public class ReceiveApiCalls implements IXposedHookLoadPackage {
 //                    }
 
                     // before onCreate call in ContactSelectionActivity.
-                    new XC_MethodHook() {
-                @Override
-                // before 'onCreate' call in ContactSelectionActivity, log the text
-                protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) {
-                    XposedBridge.log("*** Xposed log before onCreate call in Contact.");
-                }
-            } );
-        } else if(lpparam.packageName.equals("com.android.calendar")){
-                XposedBridge.log("******Loaded app: " + lpparam.packageName);
-
-                findAndHookMethod("com.android.calendar.AllInOneActivity", lpparam.classLoader,
-                        "onCreate", Bundle.class,
-
-                        // before onCreate call in AllInOneActivity.
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) {
-                                XposedBridge.log("*** Xposed log before onCreate call in Calendar.");
-                            }
-                        } );
-            }
+//                    new XC_MethodHook() {
+//                @Override
+//                // before 'onCreate' call in ContactSelectionActivity, log the text
+//                protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) {
+//                    XposedBridge.log("*** Xposed log before onCreate call in Contact.");
+//                }
+//            }
+//            );
+//        } else if(lpparam.packageName.equals("com.android.calendar")){
+//                XposedBridge.log("******Loaded app: " + lpparam.packageName);
+//
+//                findAndHookMethod("com.android.calendar.AllInOneActivity", lpparam.classLoader,
+//                        "onCreate", Bundle.class,
+//
+//                        // before onCreate call in AllInOneActivity.
+//                        new XC_MethodHook() {
+//                            @Override
+//                            protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) {
+//                                XposedBridge.log("*** Xposed log before onCreate call in Calendar.");
+//                            }
+//                        } );
+//            }
     }
 }
