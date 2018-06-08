@@ -2,6 +2,7 @@ package com.ma.catchapicall.hook;
 
 import java.lang.reflect.Member;
 
+import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -21,4 +22,5 @@ public class XposeHookHelperImpl implements HookHelperInterface {
             XposedHelpers.findAndHookMethod(className, classLoader, methodName,
                     parameterTypesAndCallback);
     }
+
 }

@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
 
 import com.ma.catchapicall.hook.AbstractBehaviorHookCallBack;
@@ -14,7 +16,11 @@ import com.ma.catchapicall.hook.HookParam;
 import com.ma.catchapicall.util.RefInvoke;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -104,17 +110,48 @@ public class ContentResolverHook extends ApiMonitorHook {
     public void replaceMethod() {
         hookhelper.findAndHookMethod("android.content.ContentResolver", ClassLoader.getSystemClassLoader(),
                 "query", Uri.class, String[].class, String.class, String[].class, String.class,
-                new XC_MethodReplacement() {
-                    @Override
-                    protected Object replaceHookedMethod(MethodHookParam param) {
-                        Uri uri = (Uri) param.args[0];
-                        if (isSensitiveUri(uri)) {
 
-                            XposedBridge.log("android.content.ContentResolver.query");
+                new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        super.afterHookedMethod(param);
+                        Uri uri = (Uri) param.args[0];
+                        Cursor c;
+                        if(isSensitiveUri(uri)){
                             XposedBridge.log("Read ContentProvider -> Uri = " + uri.toString());
-                            String queryStr = concatenateQuery(uri, (String[]) param.args[1], (String) param.args[2], (String[]) param.args[3],
+                            String queryStr = concatenateQuery(uri, (String[]) param.args[1], (String) param.args[2],
+                                    (String[]) param.args[3],
                                     (String) param.args[4]);
                             XposedBridge.log("Query SQL = " + queryStr);
+                            c = (Cursor) param.getResult();
+                            if (c != null){
+                                if (c.moveToFirst()) {
+                                    String name = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                                    // log selected contact's name
+                                    XposedBridge.log("contact name ^^^^^^^^^^^^^^^^^^^ " + name);
+                                }
+                            }
+
+                            // create an empty cursor
+                            MatrixCursor result = new MatrixCursor(new String[0]);
+                            // send empty cursor as a result from a query method.
+                            param.setResult(result);
+                        }
+                    }
+                } );
+
+
+//                new XC_MethodReplacement() {
+//                    @Override
+//                    protected Object replaceHookedMethod(MethodHookParam param) {
+//                        Uri uri = (Uri) param.args[0];
+//                        if (isSensitiveUri(uri)) {
+//
+//                            XposedBridge.log("android.content.ContentResolver.query");
+//                            XposedBridge.log("Read ContentProvider -> Uri = " + uri.toString());
+//                            String queryStr = concatenateQuery(uri, (String[]) param.args[1], (String) param.args[2], (String[]) param.args[3],
+//                                    (String) param.args[4]);
+//                            XposedBridge.log("Query SQL = " + queryStr);
 
 //                            Context context =  AndroidAppHelper.currentApplication();
 //                            PackageManager manager = context.getPackageManager();
@@ -122,11 +159,11 @@ public class ContentResolverHook extends ApiMonitorHook {
 //                            Intent intent = manager.getLaunchIntentForPackage("com.ma.bakingrecipes");
 //                            intent.addCategory(Intent.CATEGORY_LAUNCHER);
 //                            context.startActivity(intent);
-                        }
-                        //param.setResult(DO_NOTHING);
-                        
-                        return null;
-                    }
-                });
+//                        }
+                //param.setResult(DO_NOTHING);
+//
+//                        return null;
+//                    }
+//                });
     }
 }

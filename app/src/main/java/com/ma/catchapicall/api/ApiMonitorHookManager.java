@@ -22,4 +22,5 @@ public class ApiMonitorHookManager {
     public void replaceMethod(){
         this.contentResolverHook.replaceMethod();
     }
+
 }
