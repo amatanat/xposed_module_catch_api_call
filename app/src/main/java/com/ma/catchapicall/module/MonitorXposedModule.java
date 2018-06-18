@@ -19,7 +19,10 @@ public class MonitorXposedModule implements IXposedHookLoadPackage {
             return;
         }
 
-        ApiMonitorHookManager.getInstance().replaceMethod();
+
+
+        if (!lpparam.packageName.equals("com.ma.trustedcomponent"))
+            ApiMonitorHookManager.getInstance().replaceMethod();
 
 
        // ApiMonitorHookManager.getInstance().startMonitor();
