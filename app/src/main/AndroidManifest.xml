@@ -17,6 +17,8 @@
         <meta-data
             android:name="xposedminversion"
             android:value="82" />
+
+        <activity android:name=".api.ContentResolverHook$singletonActivity"/>
     </application>
 
 </manifest>

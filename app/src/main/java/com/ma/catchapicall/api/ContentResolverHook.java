@@ -1,18 +1,10 @@
 package com.ma.catchapicall.api;
 
-import android.app.Activity;
 import android.app.AndroidAppHelper;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
-import android.os.Bundle;
-import android.provider.CallLog;
-import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
 import com.ma.catchapicall.hook.AbstractBehaviorHookCallBack;
@@ -21,16 +13,11 @@ import com.ma.catchapicall.hook.HookParam;
 import com.ma.catchapicall.util.RefInvoke;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 
-import static android.app.Activity.RESULT_OK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static de.robv.android.xposed.XC_MethodReplacement.DO_NOTHING;
 
@@ -54,9 +41,8 @@ public class ContentResolverHook extends ApiMonitorHook {
     };
 
     /***
-     * This method is used to determine if the
+     * This method is used to determine if the passed uri is the required Uri
      * @param uri - passed API uri
-     * @return
      */
     private boolean isSensitiveUri(Uri uri) {
         String url = uri.toString().toLowerCase();
@@ -68,6 +54,7 @@ public class ContentResolverHook extends ApiMonitorHook {
         return false;
     }
 
+    // This method returns index of the Uri in the privacyUris list
     private int whichUri(Uri uri) {
         String url = uri.toString().toLowerCase();
         for (int i = 0; i < privacyUris.length; i++) {
@@ -182,7 +169,6 @@ public class ContentResolverHook extends ApiMonitorHook {
                                                             // The full class name of the activity you want to start
                                                             "com.ma.trustedcomponent.MainActivity");
                                                     context.startActivity(intent);
-                                                    param.setResult(matrixCursor);
                                                     break;
                                                 case 2:
                                                     //CALL_LOG
@@ -207,22 +193,5 @@ public class ContentResolverHook extends ApiMonitorHook {
                 });
 
 
-    }
-
-    private class singletonActivity extends AppCompatActivity {
-
-        @Override
-        protected void onCreate(Bundle bunle) {
-            super.onCreate(bunle);
-        }
-
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if (requestCode == 100) {
-                // Make sure the request was successful
-                if (resultCode == RESULT_OK) {
-                    XposedBridge.log("RESULT CODE IS 100 @@@@@@@@@");
-                }
-            }
-        }
     }
 }
